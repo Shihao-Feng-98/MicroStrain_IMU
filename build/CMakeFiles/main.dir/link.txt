@@ -1,0 +1,1 @@
+/usr/bin/c++   -O3 -std=c++11 -Wall -g  -rdynamic CMakeFiles/main.dir/src/main.cpp.o  -o ../bin/main  -Wl,-rpath,/usr/share/c++-mscl /usr/share/c++-mscl/libmscl.so -lpthread 
