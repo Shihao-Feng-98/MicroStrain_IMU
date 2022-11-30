@@ -1,7 +1,8 @@
 #include <microstrain_imu.h>
 
-GX3_AHRS::GX3_AHRS(string port, unsigned int sample_rate):_USB_port(port)
+GX3_AHRS::GX3_AHRS(string port, unsigned int sample_rate)
 {
+    _USB_port = port;
     _sample_rate = sample_rate;
     _time_out = 1000 / sample_rate;  // node_ptr->getDataPackets()
     // Create a SerialConnection with the COM port

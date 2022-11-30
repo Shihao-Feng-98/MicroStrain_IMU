@@ -49,7 +49,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : " -O3 -std=c++11 -Wall -O3 -DNDEBUG  "
+					"fragment" : " -O3 -std=c++14 -Wall -O3 -DNDEBUG  "
 				}
 			],
 			"includes" : 
@@ -86,7 +86,7 @@
 		"commandFragments" : 
 		[
 			{
-				"fragment" : "-O3 -std=c++11 -Wall -O3 -DNDEBUG",
+				"fragment" : "-O3 -std=c++14 -Wall -O3 -DNDEBUG",
 				"role" : "flags"
 			},
 			{

@@ -1,1 +1,1 @@
-/usr/bin/c++   -O3 -std=c++11 -Wall -O3 -DNDEBUG  -rdynamic CMakeFiles/main.dir/src/main.cpp.o CMakeFiles/main.dir/src/microstrain_imu.cpp.o CMakeFiles/main.dir/src/periodic_rt_task.cpp.o  -o ../bin/main   -L/usr/share/c++-mscl  -Wl,-rpath,/usr/share/c++-mscl -lmscl -lpthread 
+/usr/bin/c++   -O3 -std=c++14 -Wall -O3 -DNDEBUG  -rdynamic CMakeFiles/main.dir/src/main.cpp.o CMakeFiles/main.dir/src/microstrain_imu.cpp.o CMakeFiles/main.dir/src/periodic_rt_task.cpp.o  -o ../bin/main   -L/usr/share/c++-mscl  -Wl,-rpath,/usr/share/c++-mscl -lmscl -lpthread 

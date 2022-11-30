@@ -4,21 +4,20 @@
 using namespace std;
 #include <string.h> // menset
 #include <sys/mman.h> // mlockall(MCL_CURRENT|MCL_FUTURE)
+#include <memory>
 
 #include "C_timer.h"
 #include "periodic_rt_task.h"
 #include "microstrain_imu.h"
 
+unique_ptr<GX3_AHRS> gx3_ahrs;
+
 void* main_loop(void* argc)
 {
-    // ======= IMU ==============
-    const string com_port = "/dev/ttyACM0"; 
-    GX3_AHRS gx3_ahrs(com_port, 300);
-
-    const double dt = 0.00333;
+    const double dt = 0.002;
     double time_since_run = 0.;
     int valid_iteration = 0;
-    vector<double> t;
+    vector<double> t, iter;
     CTimer timer_step;
 
     for (int i = 0; i < 10; i++)
@@ -28,17 +27,23 @@ void* main_loop(void* argc)
             timer_step.reset();
             // wait for data packets in buffer
 
-            if (gx3_ahrs.parse_data()) {valid_iteration++;}
+            if (gx3_ahrs->parse_data()) {valid_iteration++;}
             t.push_back(timer_step.end());
 
             time_since_run += dt;
             // wait the rest of the time
             while (timer_step.end() < dt*1000*1000); 
         }
-        cout << "valid iteration: " << valid_iteration << endl;
+        iter.push_back(valid_iteration);
         time_since_run = 0.;
         valid_iteration = 0;
     }
+    cout << "valid_iteration: ";
+    for (int i = 0; i < iter.size(); i++)
+    {
+        cout << iter[i] << " ";
+    }
+    cout << endl;
 
     cout << *max_element(t.begin(), t.end()) << " us\n";
     cout << accumulate(t.begin(), t.end(), 0.) / t.size() << " us\n";
@@ -57,6 +62,8 @@ int main(int argc, char **argv)
         cout << "mlockall failed: %m\n"; 
         return -2;
     }
+
+    gx3_ahrs = make_unique<GX3_AHRS>("/dev/ttyACM0", 500);
 
     // 主控制线程
     PeriodicRtTask *main_task = new PeriodicRtTask("[Main Control Thread]", 95, main_loop, 5);

@@ -31,7 +31,7 @@ private:
 
     uint32_t _sample_rate; 
     uint32_t _time_out;
-    const string _USB_port;
+    string _USB_port;
     mscl::Connection _connection;
     mscl::InertialNode *_node_ptr;
     mscl::MipChannels _ahrsImuChs;
