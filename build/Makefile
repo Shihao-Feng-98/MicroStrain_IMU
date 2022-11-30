@@ -150,6 +150,60 @@ src/main.cpp.s:
 	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
+src/microstrain_imu.o: src/microstrain_imu.cpp.o
+
+.PHONY : src/microstrain_imu.o
+
+# target to build an object file
+src/microstrain_imu.cpp.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/microstrain_imu.cpp.o
+.PHONY : src/microstrain_imu.cpp.o
+
+src/microstrain_imu.i: src/microstrain_imu.cpp.i
+
+.PHONY : src/microstrain_imu.i
+
+# target to preprocess a source file
+src/microstrain_imu.cpp.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/microstrain_imu.cpp.i
+.PHONY : src/microstrain_imu.cpp.i
+
+src/microstrain_imu.s: src/microstrain_imu.cpp.s
+
+.PHONY : src/microstrain_imu.s
+
+# target to generate assembly for a file
+src/microstrain_imu.cpp.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/microstrain_imu.cpp.s
+.PHONY : src/microstrain_imu.cpp.s
+
+src/periodic_rt_task.o: src/periodic_rt_task.cpp.o
+
+.PHONY : src/periodic_rt_task.o
+
+# target to build an object file
+src/periodic_rt_task.cpp.o:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/periodic_rt_task.cpp.o
+.PHONY : src/periodic_rt_task.cpp.o
+
+src/periodic_rt_task.i: src/periodic_rt_task.cpp.i
+
+.PHONY : src/periodic_rt_task.i
+
+# target to preprocess a source file
+src/periodic_rt_task.cpp.i:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/periodic_rt_task.cpp.i
+.PHONY : src/periodic_rt_task.cpp.i
+
+src/periodic_rt_task.s: src/periodic_rt_task.cpp.s
+
+.PHONY : src/periodic_rt_task.s
+
+# target to generate assembly for a file
+src/periodic_rt_task.cpp.s:
+	$(MAKE) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/src/periodic_rt_task.cpp.s
+.PHONY : src/periodic_rt_task.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -162,6 +216,12 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
+	@echo "... src/microstrain_imu.o"
+	@echo "... src/microstrain_imu.i"
+	@echo "... src/microstrain_imu.s"
+	@echo "... src/periodic_rt_task.o"
+	@echo "... src/periodic_rt_task.i"
+	@echo "... src/periodic_rt_task.s"
 .PHONY : help
 
 

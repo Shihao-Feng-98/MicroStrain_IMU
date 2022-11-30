@@ -2,6 +2,8 @@ file(REMOVE_RECURSE
   "../bin/main"
   "../bin/main.pdb"
   "CMakeFiles/main.dir/src/main.cpp.o"
+  "CMakeFiles/main.dir/src/microstrain_imu.cpp.o"
+  "CMakeFiles/main.dir/src/periodic_rt_task.cpp.o"
 )
 
 # Per-language clean rules from dependency scanning.

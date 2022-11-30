@@ -1,94 +1,68 @@
 #include <iostream>
+#include <vector>
+#include <numeric>
 using namespace std;
 #include <string.h> // menset
-#include <pthread.h> // -lpthread
 #include <sys/mman.h> // mlockall(MCL_CURRENT|MCL_FUTURE)
 
-#include <utils/C_timer.h>
-#include "mscl/mscl.h" // depend on pthread
+#include "C_timer.h"
+#include "periodic_rt_task.h"
+#include "microstrain_imu.h"
 
-int main()
+void* main_loop(void* argc)
 {
-    if(mlockall(MCL_CURRENT|MCL_FUTURE) == -1) {
-        cout << "mlockall failed: %m\n"; 
-        return -2;
-    }
-
-    // ======== main thread ========
-    cout << "main thread start\n";
-    struct sched_param param;
-    memset(&param, 0, sizeof(param)); 
-    param.sched_priority = 49; 
-    int ret = pthread_setschedparam(pthread_self(), SCHED_RR, &param);
-    if (ret) 
-    {
-        cout << "main thread setschedpolicy and setinheritsched failed\n";
-        return -1;
-    }
-
     // ======= IMU ==============
     const string com_port = "/dev/ttyACM0"; 
-    const uint32_t baud_rate = 115200;
-    mscl::Connection connection = mscl::Connection::Serial(com_port, baud_rate);
-    mscl::InertialNode node(connection);
+    GX3_AHRS gx3_ahrs(com_port, 300);
 
-    // print imu information
-    cout << "Node Information: " << endl;
-    cout << "Model Name: " << node.modelName() << endl;
-    cout << "Model Number: " << node.modelNumber() << endl;
-    cout << "Serial: " << node.serialNumber() << endl;
-    cout << "Firmware: " << node.firmwareVersion().str() << endl << endl;
-
-    // set congfig
-    uint32_t samples_per_second = 500;
-    if(node.features().supportsCategory(mscl::MipTypes::CLASS_AHRS_IMU))
-    {
-        mscl::MipChannels ahrsImuChs;
-        // set channels
-        ahrsImuChs.push_back(mscl::MipChannel(mscl::MipTypes::CH_FIELD_SENSOR_SCALED_ACCEL_VEC, 
-                                                mscl::SampleRate::Hertz(samples_per_second))); // 0x8004
-        ahrsImuChs.push_back(mscl::MipChannel(mscl::MipTypes::CH_FIELD_SENSOR_SCALED_GYRO_VEC, 
-                                                mscl::SampleRate::Hertz(samples_per_second))); // 0x8005
-        ahrsImuChs.push_back(mscl::MipChannel(mscl::MipTypes::CH_FIELD_SENSOR_EULER_ANGLES, 
-                                                mscl::SampleRate::Hertz(samples_per_second))); // 0x800c
-        //apply to the node
-        node.setActiveChannelFields(mscl::MipTypes::CLASS_AHRS_IMU, ahrsImuChs);
-    } 
-
-    // start sampling
-    node.enableDataStream(mscl::MipTypes::CLASS_AHRS_IMU);
-
-    // loop 
+    const double dt = 0.00333;
     double time_since_run = 0.;
-    double dt = 0.002;
-    uint32_t valid_interation = 0;
-    CTimer timer_step; // us
+    int valid_iteration = 0;
+    vector<double> t;
+    CTimer timer_step;
 
     for (int i = 0; i < 10; i++)
     {
-        while (time_since_run <= 1.) // check 1s
+        while (time_since_run < 1.) // check 1s
         {
             timer_step.reset();
             // wait for data packets in buffer
-            // timeout 50us 
-            while(timer_step.end() < 50) 
-            {
-                if (node.getDataPackets().size())
-                {
-                    node.getDataPackets(); // get all packets
-                    valid_interation++;
-                    break;
-                }
-            }
+
+            if (gx3_ahrs.parse_data()) {valid_iteration++;}
+            t.push_back(timer_step.end());
 
             time_since_run += dt;
             // wait the rest of the time
             while (timer_step.end() < dt*1000*1000); 
         }
-        cout << "valid interation: " << valid_interation << endl;
+        cout << "valid iteration: " << valid_iteration << endl;
         time_since_run = 0.;
-        valid_interation = 0;
+        valid_iteration = 0;
     }
+
+    cout << *max_element(t.begin(), t.end()) << " us\n";
+    cout << accumulate(t.begin(), t.end(), 0.) / t.size() << " us\n";
+
+    return nullptr;
+}
+
+
+int main(int argc, char **argv)
+{
+    /*
+    mlockall 锁定进程中所有映射到地址空间的页
+    MCL_CURRENT 已经映射的进程地址，MCL_FUTURE 将来映射的进程地址
+    */
+    if(mlockall(MCL_CURRENT|MCL_FUTURE) == -1) {
+        cout << "mlockall failed: %m\n"; 
+        return -2;
+    }
+
+    // 主控制线程
+    PeriodicRtTask *main_task = new PeriodicRtTask("[Main Control Thread]", 95, main_loop, 5);
+    sleep(1); 
+    // 析构函数会join线程，等待子线程结束
+    delete main_task;
 
     return 0;
 }

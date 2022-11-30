@@ -5,6 +5,8 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/feng_shihao/fsh_file/MicroStrain_IMU/src/main.cpp" "/home/feng_shihao/fsh_file/MicroStrain_IMU/build/CMakeFiles/main.dir/src/main.cpp.o"
+  "/home/feng_shihao/fsh_file/MicroStrain_IMU/src/microstrain_imu.cpp" "/home/feng_shihao/fsh_file/MicroStrain_IMU/build/CMakeFiles/main.dir/src/microstrain_imu.cpp.o"
+  "/home/feng_shihao/fsh_file/MicroStrain_IMU/src/periodic_rt_task.cpp" "/home/feng_shihao/fsh_file/MicroStrain_IMU/build/CMakeFiles/main.dir/src/periodic_rt_task.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

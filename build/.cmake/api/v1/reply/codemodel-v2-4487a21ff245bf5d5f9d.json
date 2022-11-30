@@ -18,7 +18,7 @@
 					]
 				}
 			],
-			"name" : "Debug",
+			"name" : "release",
 			"projects" : 
 			[
 				{
@@ -38,7 +38,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "main::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-main-Debug-823dc52413557de8ee03.json",
+					"jsonFile" : "target-main-release-9e2b3d0e9530b656a6fa.json",
 					"name" : "main",
 					"projectIndex" : 0
 				}
