@@ -4,7 +4,7 @@ GX3_AHRS::GX3_AHRS(string port, unsigned int sample_rate)
 {
     _USB_port = port;
     _sample_rate = sample_rate;
-    _time_out = 1000 / sample_rate;  // node_ptr->getDataPackets()
+    _time_out = 100;  // node_ptr->getDataPackets()
     // Create a SerialConnection with the COM port
     _connection = mscl::Connection::Serial(_USB_port, 921600);
     _node_ptr = new mscl::InertialNode(_connection);

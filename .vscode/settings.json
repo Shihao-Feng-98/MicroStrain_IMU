@@ -15,6 +15,7 @@
         "ratio": "cpp",
         "streambuf": "cpp",
         "*.txx": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "dense": "cpp"
     }
 }

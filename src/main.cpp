@@ -20,7 +20,8 @@ void* main_loop(void* argc)
     vector<double> t, iter;
     CTimer timer_step;
 
-    for (int i = 0; i < 10; i++)
+    gx3_ahrs->parse_data(); 
+    for (int i = 0; i < 1; i++)
     {
         while (time_since_run < 1.) // check 1s
         {
@@ -28,7 +29,6 @@ void* main_loop(void* argc)
             // wait for data packets in buffer
 
             if (gx3_ahrs->parse_data()) {valid_iteration++;}
-            t.push_back(timer_step.end());
 
             time_since_run += dt;
             // wait the rest of the time
@@ -45,12 +45,40 @@ void* main_loop(void* argc)
     }
     cout << endl;
 
-    cout << *max_element(t.begin(), t.end()) << " us\n";
-    cout << accumulate(t.begin(), t.end(), 0.) / t.size() << " us\n";
-
     return nullptr;
 }
 
+// void* main_loop(void* argc)
+// {
+//     const double dt = 0.002;
+//     double time_since_run = 0.;
+//     int valid_iteration = 0;
+//     vector<double> t;
+//     CTimer timer_step;
+
+//     //　一开始缓存区数据较多，第一次读取耗时几百us
+//     // 后续每次读取仅几us，一般不超过30us
+//     gx3_ahrs->parse_data(); 
+
+//     while (time_since_run < 1.) // check 1s
+//     {
+//         timer_step.reset();
+//         // wait for data packets in buffer
+
+//         if (gx3_ahrs->parse_data()) {valid_iteration++;}
+//         t.push_back(timer_step.end());
+
+//         time_since_run += dt;
+//         // wait the rest of the time
+//         while (timer_step.end() < dt*1000*1000); 
+//     }
+//     cout << "valid_iteration: " << valid_iteration << endl;
+    
+//     cout << *max_element(t.begin(), t.end()) << " us\n";
+//     cout << accumulate(t.begin(), t.end(), 0.) / t.size() << " us\n";
+
+//     return nullptr;
+// }
 
 int main(int argc, char **argv)
 {

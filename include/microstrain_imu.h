@@ -5,7 +5,7 @@
 #include <string>
 #include <iostream>
 using namespace std;
-#include <Eigen/Dense> 
+#include <eigen3/Eigen/Dense> 
 using namespace Eigen;
 
 #include "mscl/mscl.h" 
